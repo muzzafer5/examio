@@ -1,15 +1,14 @@
-const mongoose = require('mongoose')
-const Teacher = mongoose.model("teachers")
+const Profile = require('../models/teacher_profile')
 
 function ShowProfile(req,res) {
-    Teacher.findOne({account:req.user.id})
-    .exec((err,teacher)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }
-        res.json(teacher)
-    })
+  Profile.findOne({account:req.user.id})
+  .populate("account")
+  .exec((err,profile)=>{ 
+      if(err){
+          return res.status(422).json({error:err})
+      }
+      res.json(profile)
+  })
 }
 
 module.exports = ShowProfile
-

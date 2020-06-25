@@ -1,11 +1,14 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/user')
+const TeacherProfile = require('../../teacher/models/teacher_profile')
+const StudentProfile = require('../../student/models/student_profile')
 
 function Signup(req,res) {
-  console.log("hi")
   const userData = {
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    fullname: req.body.fullname,
+    join_as: req.body.join_as
   }
 
   User.findOne({
@@ -17,8 +20,16 @@ function Signup(req,res) {
           userData.password = hash
           User.create(userData)
             .then(user => {
+              if(userData.join_as=="teacher"){
+                  TeacherProfile.create({})
+              }
+              else if (userData.join_as == "student"){
+                  StudentProfile.create({})
+              }
+              else{
+                return res.status(422).json({error:"Not valid"})
+              }
               res.json({ status: user.email + ' Registered!' })
-	            console.log("Registered")
             })
             .catch(err => {
               return res.status(422).json({error:err})

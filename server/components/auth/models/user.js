@@ -11,6 +11,10 @@ const UserSchema = new Schema({
         type: String,   
         required: true
     },
+    fullname: {
+        type: String,
+        required: true
+    },
     created_at : {
         type : Date,
         default: Date.now
@@ -18,6 +22,10 @@ const UserSchema = new Schema({
     online : {
         type: Boolean,
         default : true
+    },
+    join_as : {
+        type : String,
+        required : true
     }
 })
 

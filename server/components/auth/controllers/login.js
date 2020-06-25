@@ -19,7 +19,6 @@ function Login(req,res) {
             //1 hour
             expiresIn: 3600
           })
-          console.log("Loged in")
           res.send("logged in")
         } 
         else {

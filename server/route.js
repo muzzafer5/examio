@@ -11,8 +11,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({limit: "50mb"}));
 
 const auth = require("./components/auth/routes/auth")
+const class = require("./components/class/routes/class")
 
 app.use("/auth", auth)
+app.use("/class",class)
 
 app.get('/', (req, res) => {res.send('Exam.Io')})
 

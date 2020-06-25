@@ -1,4 +1,4 @@
-const Profile = require('../models/user_profile')
+const Profile = require('../models/student_profile')
 
 function ShowProfile(req,res) {
   Profile.findOne({account:req.user.id})
