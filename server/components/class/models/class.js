@@ -11,17 +11,18 @@ const ClassSchema = new Schema({
         type : String
     },
     id : {
-        type : Number,
-        unique : true,
+        type : String,
         required : true
     },
     created_by : {
         type : ObjectId,
-        required : true
+        required : true,
+        ref : "users"
     },
     enrolled_students : [
         {
-            type: ObjectId
+            type: ObjectId,
+            ref : "users"
         }
     ]
 })

@@ -14,13 +14,20 @@ module.exports = (req,res,next)=>{
         if(err){
             return res.status(401).json({error:"you must be logged in as teacher"})
         }
-        if(payload.join_as != "teacher"){
-            return res.status(401).json({error:"you must be logged in as teacher"})
+        else{
+            User.findById(payload._id)
+                .then(userdata=>{
+                    if(userdata.join_as==="teacher"){
+                        req.user = userdata
+                        next()
+                    }
+                    else{
+                        return res.status(401).json({error:"you must be logged in as teacher"})
+                    }
+                }) 
+                .catch(err=>{
+                    return res.status(401).json({error:err})
+                })        
         }
-        const {_id} = payload
-        User.findById(_id).then(userdata=>{
-            req.user = userdata
-            next()
-        })           
     })
 }

@@ -4,14 +4,15 @@ const router = express.Router()
 const RequireStudentLogin  = require('../../../middleware/require_student_login')
 const RequireTeacherLogin  = require('../../../middleware/require_teacher_login')
 
-var ShowProfile = require('../controllers/show_profile')
+var Create = require('../controllers/create')
+var Join = require('../controllers/join')
 
 router
-    .route('/profile')
-    .get(RequireStudentLogin,(req,res)=> ShowProfile(req,res))
+    .route('/create')
+    .post(RequireTeacherLogin,(req,res)=> Create(req,res))
 
 router
-    .route('/profile')
-    .post(RequireStudentLogin,(req,res)=> EditProfile(req,res))
+    .route('/join')
+    .put(RequireStudentLogin,(req,res)=> Join(req,res))
 
 module.exports = router

@@ -12,14 +12,13 @@ function Login(req,res) {
         if (bcrypt.compareSync(req.body.password, user.password)) {
           // Passwords match
           const payload = {
-            _id: user._id,
-    	      email: req.body.email,
+            _id: user._id
           }
           let token = jwt.sign(payload, SECRET_KEY, {
             //1 hour
             expiresIn: 3600
           })
-          res.send("logged in")
+          res.send(token)
         } 
         else {
           return res.status(422).json({error:"User doesn't exit"})

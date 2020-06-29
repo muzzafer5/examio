@@ -18,22 +18,28 @@ function Signup(req,res) {
       if (!user) {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           userData.password = hash
-          User.create(userData)
+          if(userData.join_as=="teacher" || userData.join_as == "student"){
+            User.create(userData)
             .then(user => {
-              if(userData.join_as=="teacher"){
-                  TeacherProfile.create({})
+              var profile = {
+                account : user._id
               }
-              else if (userData.join_as == "student"){
-                  StudentProfile.create({})
+              if(user.join_as=="teacher"){
+                  TeacherProfile.create(profile)
+                  res.json({ status: user.email + ' registered as teacher' })
               }
-              else{
-                return res.status(422).json({error:"Not valid"})
+              else if (user.join_as == "student"){
+                  StudentProfile.create(profile)
+                  res.json({ status: user.email + ' registered as student' })
               }
-              res.json({ status: user.email + ' Registered!' })
             })
             .catch(err => {
               return res.status(422).json({error:err})
             })
+          }
+          else{
+            return res.status(422).json({error:"Not valid"})
+          }
         })
       } 
       else {
