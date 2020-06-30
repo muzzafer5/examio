@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Nav,Navbar,NavDropdown} from 'react-bootstrap'
+import {Nav,Navbar} from 'react-bootstrap'
 
 class Header extends Component {
   render() {
@@ -10,8 +10,8 @@ class Header extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto"></Nav>
             <Nav>
-                <Nav.Link href="/auth/login">Login</Nav.Link>
-                <Nav.Link eventKey={2} href="/auth/signup">Signup</Nav.Link>
+                <Nav.Link href="/auth/login">Join</Nav.Link>
+                <Nav.Link eventKey={2} href="/auth/signup">User</Nav.Link>
             </Nav>
         </Navbar.Collapse>
         </Navbar>
