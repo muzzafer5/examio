@@ -8,7 +8,8 @@ const ClassSchema = new Schema({
         required : true 
     },
     info : {
-        type : String
+        type : String,
+        required : true
     },
     id : {
         type : String,
@@ -23,6 +24,21 @@ const ClassSchema = new Schema({
         {
             type: ObjectId,
             ref : "users"
+        }
+    ],
+    contents : [
+        {
+            announcement : {
+                type : String
+            },
+            exam_link : {
+                type : ObjectId,
+                ref : "exams"
+            },
+            created_at : {
+                type : Date,
+                default : Date.now
+            }
         }
     ]
 })

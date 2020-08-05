@@ -6,6 +6,22 @@ const StudentProfileSchema = new Schema({
     info:{
         type : String
     },
+    enrolled_classes : [
+        {
+            class_id: {
+                type : ObjectId,
+                ref : "classes"
+            }
+        }
+    ],
+    unenrolled_class: [
+        {
+            class_id: {
+                type : ObjectId,
+                ref : "classes"
+            } 
+        }   
+    ],
     account: {
         type:ObjectId,
         ref:"users"

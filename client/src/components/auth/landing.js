@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import {Nav,Navbar} from 'react-bootstrap'
 
 class Landing extends Component {
+  componentDidMount(){
+    if(localStorage.usertoken)
+        this.props.history.push(`/home`)  
+  }
   render() {
     return (
         <div className = "landing">
-            <div className = "header">
+            <div className = "header px-3">
                 <Navbar collapseOnSelect expand="lg" bg="light" variant="light" >
                 <Navbar.Brand href="/">Exam.Io</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

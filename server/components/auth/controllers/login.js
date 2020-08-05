@@ -16,9 +16,14 @@ function Login(req,res) {
           }
           let token = jwt.sign(payload, SECRET_KEY, {
             //1 hour
-            expiresIn: 3600
+            expiresIn: 3600*10
           })
-          res.send(token)
+          if(user.join_as === "teacher"){
+            res.json({token:token,is_teacher : true})
+          }
+          else{
+            res.json({token:token,is_teacher : false})
+          }
         } 
         else {
           return res.status(422).json({error:"User doesn't exit"})

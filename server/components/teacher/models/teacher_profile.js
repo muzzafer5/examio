@@ -6,6 +6,18 @@ const TeacherProfileSchema = new Schema({
     info:{
         type : String
     },
+    enrolled_classes : [
+        {
+            type : ObjectId,
+            ref : "classes"
+        }
+    ],
+    unenrolled_class: [
+        {
+            type : ObjectId,
+            ref : "classes"        
+        }   
+    ],
     account: {
         type:ObjectId,
         ref:"users"

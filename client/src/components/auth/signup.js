@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { signup } from './ConnectServer'
+import { Link } from 'react-router-dom'
 
-class Register extends Component {
+class Signup extends Component {
   constructor() {
     super()
     this.state = {
       fullname: '',
       email: '',
       password: '',
+      join_as : '',
       errors: {}
     }
     this.onChange = this.onChange.bind(this)
@@ -22,10 +24,13 @@ class Register extends Component {
     const newUser = {
       fullname: this.state.fullname,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      join_as : this.state.join_as
     }
-    register(newUser).then(res => {
+    console.log(newUser)
+    signup(newUser).then(res => {
       if(res){
+        console.log(res)
         this.props.history.push(`/auth/login`)
       }
     })
@@ -33,12 +38,10 @@ class Register extends Component {
    
   render() {
     return (
-      <div className="container">
-        <div className="row mt-5 pt-5">
-          <div className="col-sm-6 mt-5 ">
-            <form Validate onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Signup</h1>
-              <div className="form-group">
+      <div className="signup " style = {{border : "2px solid grey",position:"absolute", top : "20%", width: "35%", left : "30%"}}>
+            <form validate="true" onSubmit={this.onSubmit}>
+              <h1 className="h2 text-center py-2" style = {{borderBottom : "1px solid grey"}}>Signup</h1>
+              <div className="form-group my-3 mx-3">
                 <label htmlFor="name">Full name</label>
                 <input
                   type="text"
@@ -50,7 +53,7 @@ class Register extends Component {
                   onChange={this.onChange}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group my-3 mx-3">
                 <label htmlFor="email">Email address</label>
                 <input
                   type="email"
@@ -62,7 +65,7 @@ class Register extends Component {
                   onChange={this.onChange}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group my-3 mx-3">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -74,18 +77,28 @@ class Register extends Component {
                   onChange={this.onChange}
                 />
               </div>
+              <span className = "ml-3">Join as: </span>
+              <div className="form-check form-check-inline mx-3">
+                  <input className="form-check-input" type="radio" name="join_as" id="inlineRadio1" value="teacher" onChange={this.onChange}/>
+                  <label className="form-check-label" htmlFor="inlineRadio1">Tecaher</label>
+                </div>
+                <div className="form-check form-check-inline ">
+                  <input className="form-check-input" type="radio" name="join_as" id="inlineRadio2" value="student" onChange={this.onChange}/>
+                  <label className="form-check-label" htmlFor="inlineRadio2">Student</label>
+                </div>
+              <div className = "my-3">
               <button
                 type="submit"
-                className="main-btn btn-block"
+                className="btn btn-primary mx-3 px-5"
               >
                 Signup
               </button>
+              <Link to={'/auth/login'} >Already have an account?</Link>
+              </div>
             </form>
-          </div>
-        </div>
       </div>
     )
   }
 }
 
-export default Register
+export default Signup

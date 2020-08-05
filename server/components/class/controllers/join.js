@@ -1,4 +1,5 @@
 const Class = require('../models/class')
+const Profile = require('../../student/models/student_profile')
 
 function Join(req,res) {
     Class.findOneAndUpdate(
@@ -7,8 +8,14 @@ function Join(req,res) {
             {new : true}
         )
         .then(result=>{
-            if(result)
-                res.json(result)
+            if(result){
+                Profile.findOneAndUpdate(
+                    {account:req.user.id,'enrolled_classes.class_id' :{$ne : result._id}},
+                    {$addToSet:{enrolled_classes : {class_id : result._id}}}
+                ).then(profile =>{
+                    res.json(result.title)
+                })
+            }
             else{
                 res.status(422).json({error : "Invalid Class Id"})
             }

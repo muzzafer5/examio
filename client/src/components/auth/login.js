@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { login } from './ConnectServer'
+import {Link} from 'react-router-dom'
 
 class Login extends Component {
   constructor() {
@@ -19,7 +20,6 @@ class Login extends Component {
   }
   onSubmit(e) {
     e.preventDefault()
-
     const user = {
       email: this.state.email,
       password: this.state.password
@@ -29,7 +29,6 @@ class Login extends Component {
       if (res) {
         localStorage.setItem('usertoken', res.token)
         localStorage.setItem('teacher', res.is_teacher)
-        console.log(localStorage.teacher)
         this.props.history.push(`/home`)
       }  
     })
@@ -37,12 +36,10 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="row mt-5 pt-5">
-          <div className="col-sm-6 mt-5 ">
-            <form onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-4 font-weight-normal">Login </h1>
-              <div className="form-group">
+      <div className="login " style = {{border : "2px solid grey",position:"absolute", top : "20%", width: "35%", left : "30%"}}>
+            <form validate="true" onSubmit={this.onSubmit}>
+              <h1 className="h2 text-center py-2" style = {{borderBottom : "1px solid grey"}}>Login</h1>
+              <div className="form-group my-3 mx-3">
                 <label htmlFor="email">Email address</label>
                 <input
                   type="email"
@@ -54,7 +51,7 @@ class Login extends Component {
                   onChange={this.onChange}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group my-3 mx-3">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -66,15 +63,16 @@ class Login extends Component {
                   onChange={this.onChange}
                 />
               </div>
+              <div className = "my-3">
               <button
                 type="submit"
-                className="main-btn btn-block"
+                className="btn btn-primary mx-3 px-5"
               >
-                Sign in
+                Login
               </button>
+              <Link to={'/auth/signup'} >Don't have an account?</Link>
+              </div>
             </form>
-          </div>
-        </div>
       </div>
     )
   }

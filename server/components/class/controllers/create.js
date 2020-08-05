@@ -16,7 +16,7 @@ function Create(req,res) {
           }
           Class.create(ClassData)
               .then(created_class=>{
-                  res.send("class created")
+                  res.json(created_class.id)
               })
               .catch(err => {
                   return res.status(422).json({error:err})
@@ -31,7 +31,7 @@ function Create(req,res) {
           }
           Class.create(ClassData)
               .then(created_class=>{
-                  res.send("class created")
+                res.json(created_class.id)
               })
               .catch(err => {
                   return res.status(422).json({error:err})
