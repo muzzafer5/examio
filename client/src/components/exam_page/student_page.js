@@ -28,6 +28,7 @@ class StudentExamPage extends Component {
         if (this.timer == 0 && this.state.seconds > 0) {
             this.timer = setInterval(this.countDown, 1000);
         }
+
     }
 
     countDown() {
@@ -39,8 +40,9 @@ class StudentExamPage extends Component {
         })
         
         // Check if we're at zero.
-        if (seconds == 0) { 
+        if (seconds<=0) { 
             clearInterval(this.timer);
+            this.onSubmit()
         }
     }
 
@@ -79,6 +81,7 @@ class StudentExamPage extends Component {
     }
 
     onSubmit(e){
+        console.log("hi")
         var detail = {
             answers : this.state.answers,
             exam_id : this.state.exam_id
@@ -101,61 +104,39 @@ class StudentExamPage extends Component {
     }
     
     componentDidMount (){
+
         this.socket = io('http://localhost:5000')
         this.socket.emit('room', this.state.exam_id)
         
-        this.playVideoFromCamera()
         fetch_exam({id: this.state.exam_id}).then(exam=>{
+
             this.setState({exam_paper : exam})
             var arr = new Array(exam.total_questions).fill('')
             var startDate = new Date()
-            var endDate   = new Date(exam.end_time);
+            var endDate   = new Date(exam.end_time)
+            var testStartDate = new Date(exam.start_time)
             var seconds = (endDate.getTime() - startDate.getTime()) / 1000
             this.setState({seconds : seconds})
             let timeLeftVar = this.secondsToTime(seconds)
             this.setState({ time: timeLeftVar })
             this.startTimer()
-            this.setState({answers : arr})         
+            this.setState({answers : arr})   
+            if(testStartDate>startDate){
+                this.props.history.push('/class/' + this.state.class_id)
+            }
+            else if(endDate<startDate){
+                this.props.history.push('/class/' + this.state.class_id)
+            }
+            else{
+                this.playVideoFromCamera()
+            }      
         })
         this.socket.on('message', (msg) => {
             alert("New announcement :" + msg)
           })
     }
 
-    async fullScreen(){
-        // Different browser have different syntax therefore check if any of these syntax is available only then it should be used
-        //If already in fullscreen mode
-        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        }
-        // if not in fullscreen mode
-        else{
-            if (document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled) {
-                let videoContainer = this.videoDiv.current;
-                if (videoContainer.requestFullscreen) {
-                    videoContainer.requestFullscreen();
-                } else if (videoContainer.webkitRequestFullscreen) {
-                    videoContainer.webkitRequestFullscreen();
-                } else if (videoContainer.mozRequestFullScreen) {
-                    videoContainer.mozRequestFullScreen();
-                } else if (videoContainer.msRequestFullscreen) {
-                    videoContainer.msRequestFullscreen();
-                } else {
-                    //FullScreen not available on browser
-                    window.alert('FullScreen not allowed by browser');
-                }
-            }
-        }
-    }
-    
+   
     render(){
        
         return (

@@ -16,7 +16,7 @@ function Login(req,res) {
           }
           let token = jwt.sign(payload, SECRET_KEY, {
             //1 hour
-            expiresIn: 3600*10
+            expiresIn: 3600*24*30
           })
           if(user.join_as === "teacher"){
             res.json({token:token,is_teacher : true})
