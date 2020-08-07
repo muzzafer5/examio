@@ -12,6 +12,7 @@ import CreateExam from './components/exam/create'
 import CreateQuestion from './components/exam/create_question'
 import StudentExamPage from './components/exam_page/student_page'
 import TeacherExamPage from './components/exam_page/teacher_page'
+import AnswerPage from './components/exam_page/answer_page.js'
 
 class App extends PureComponent {
   render () {
@@ -27,6 +28,7 @@ class App extends PureComponent {
           <RouteWithNavbarFooter exact path = "/class/:classId/create_exam/question" component = {CreateQuestion}/>
           <Route exact path = "/class/:classId/teacher/:examId" component = {TeacherExamPage}/>
           <Route exact path = "/class/:classId/student/:examId" component = {StudentExamPage}/>
+          <Route exact path = '/class/:classId/teacher/:examId/:fullname/:userId' component = {AnswerPage}/>
         </div>
       </Router>
     )

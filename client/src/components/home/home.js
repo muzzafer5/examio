@@ -41,7 +41,7 @@ class Home extends Component {
         {
           this.state.student_classes ? (
             this.state.student_classes.map(data =>(
-              <Card className = "mr-3" key = {data.class_id.id} style={{ width: '16rem' }}>
+              <Card className = "mr-3 my-3 py-3" key = {data.class_id.id} style={{ width: '16rem' }}>
               <Card.Body>
                 <Card.Title>{data.class_id.title}</Card.Title>
                 <Card.Text>

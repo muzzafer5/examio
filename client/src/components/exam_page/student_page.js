@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Modal,Button} from 'react-bootstrap'
 import {submit_answers,fetch_exam} from './ConnectServer'
-import FullScreen from "react-full-screen"
+import io from 'socket.io-client'
 
 class StudentExamPage extends Component {
     constructor(props){
@@ -17,12 +17,11 @@ class StudentExamPage extends Component {
           errors: {}
         }
         this.timer = 0;
-        this.videoDiv = React.createRef(); 
+        this.handle = null 
         this.startTimer = this.startTimer.bind(this)
         this.countDown = this.countDown.bind(this)
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
-        this.fullScreen=this.fullScreen.bind(this)
     }
 
     startTimer() {
@@ -100,7 +99,11 @@ class StudentExamPage extends Component {
             console.error('Error opening video camera.', error);
         }
     }
+    
     componentDidMount (){
+        this.socket = io('http://localhost:5000')
+        this.socket.emit('room', this.state.exam_id)
+        
         this.playVideoFromCamera()
         fetch_exam({id: this.state.exam_id}).then(exam=>{
             this.setState({exam_paper : exam})
@@ -114,6 +117,9 @@ class StudentExamPage extends Component {
             this.startTimer()
             this.setState({answers : arr})         
         })
+        this.socket.on('message', (msg) => {
+            alert("New announcement :" + msg)
+          })
     }
 
     async fullScreen(){
@@ -153,27 +159,33 @@ class StudentExamPage extends Component {
     render(){
        
         return (
-            <FullScreen enabled="true" className = "ongoing exam ml-5" >
-                <video style = {{border : "2px solid black", height:"100px", float : "right"}} id="localVideo" autoplay="true" muted/>
-                <div className = "Header my-2" style = {{fontSize : "17px"}}>
-                    <div className = "row">
-                        <div className = "col">
-                            Exam Title : <b style={{fontSize : "20px"}}>{this.state.exam_paper.title}</b>
+            <div className = "ongoing exam mx-5" >
+                <div className = "Header" style = {{fontSize : "17px"}}>
+                    <div className = "row ">
+                        <div className = "col-4 pt-4">
+                            Exam Title : <b style={{fontSize : "20px"}}>{this.state.exam_paper.title}</b> 
                         </div>
-                        <div className = "col text-center">
+                        <div className = "col-5 pt-3 pl-4">
                             Time left : <b style={{color:"red", fontSize : "20px"}}>{this.state.time.h} : {this.state.time.m} : {this.state.time.s}</b>
                         </div>
-                        <div className = "col" >
-                            <button className = "btn btn-primary" style = {{float : "right"}} 
+                        <div className = "col-2 pt-4" >
+                            <span style = {{float : "right"}}>
+                            <button className = "btn btn-primary" 
                                 onClick = {this.onSubmit}
                             >
                                  Submit
                             </button>
+                            <button  className = "btn btn-light ml-4">Ask doubt</button>
+                            </span>
+                        </div>
+                        <div className = "col-1">
+                            <video style = {{border : "2px solid black", height:"90px", float : "right"}} id="localVideo" autoplay="true" muted/>
                         </div>
                     </div>
+
                </div>
                 <div className = "questions"
-                    style = {{overflowY: 'scroll',height : "700px",fontWeight : "20px", border : "2px solid grey", borderRadius : "8px"}}
+                    style = {{overflowY: 'scroll',height : "650px",fontWeight : "20px", border : "2px solid grey", borderRadius : "8px"}}
                 >
                     {this.state.exam_paper.questions_list ? (
                         this.state.exam_paper.questions_list.map((data,index)=>(
@@ -194,7 +206,7 @@ class StudentExamPage extends Component {
                         ))
                     ):''}
                 </div>
-            </FullScreen>
+            </div>
         )
     }
 }
