@@ -13,7 +13,21 @@ function Create(req,res) {
     }
 
     Exam.create(new_exam).then(exam=>{
-      Class.findOneAndUpdate(
+      if(req.body.group=="1"){
+        Class.findOneAndUpdate(
+          {id:req.body.class_id},
+          {$push:{contents : {group_exam : exam._id}}},
+          {new : true}
+        )
+        .then(result=>{
+            res.send("created")
+        })
+        .catch(err=>{
+            res.status(422).json({error : err})
+        })
+      }
+      else{
+        Class.findOneAndUpdate(
           {id:req.body.class_id},
           {$push:{contents : {exam_link : exam._id}}},
           {new : true}
@@ -24,6 +38,7 @@ function Create(req,res) {
         .catch(err=>{
             res.status(422).json({error : err})
         })
+      }
     })
     .catch(err =>{
       res.status(422).json({Err:err})

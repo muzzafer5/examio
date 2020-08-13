@@ -13,6 +13,7 @@ import CreateQuestion from './components/exam/create_question'
 import StudentExamPage from './components/exam_page/student_page'
 import TeacherExamPage from './components/exam_page/teacher_page'
 import AnswerPage from './components/exam_page/answer_page.js'
+import GroupExamPage from './components/exam_page/group_page'
 
 class App extends PureComponent {
   render () {
@@ -24,10 +25,12 @@ class App extends PureComponent {
           <Route exact path = "/auth/login" component = {Login} />
           <Route exact path = "/auth/signup" component = {Signup} />
           <RouteWithNavbarFooter exact path = "/class/:classId" component = {ClassPage}/>
-          <RouteWithNavbarFooter exact path = "/class/:classId/create_exam" component = {CreateExam}/>
-          <RouteWithNavbarFooter exact path = "/class/:classId/create_exam/question" component = {CreateQuestion}/>
+          <RouteWithNavbarFooter exact path = "/class/:classId/create_exam/:Id" component = {CreateExam}/>
+          <RouteWithNavbarFooter exact path = "/class/:classId/create_exam/add/question" component = {CreateQuestion}/>
           <Route exact path = "/class/:classId/teacher/:examId" component = {TeacherExamPage}/>
           <Route exact path = "/class/:classId/student/:examId" component = {StudentExamPage}/>
+          <Route exact path = "/class/:classId/group/student/:examId" component = {GroupExamPage}/>
+          <Route exact path = "/class/:classId/group/teacher/:examId" component = {TeacherExamPage}/>
           <Route exact path = '/class/:classId/teacher/:examId/:fullname/:userId' component = {AnswerPage}/>
         </div>
       </Router>

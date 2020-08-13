@@ -3,7 +3,8 @@ import {Modal,Button} from 'react-bootstrap'
 import {submit_answers,fetch_exam} from './ConnectServer'
 import io from 'socket.io-client'
 
-class StudentExamPage extends Component {
+
+class GroupExamPage extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -81,6 +82,7 @@ class StudentExamPage extends Component {
             };
           })
         localStorage.setItem('exam', JSON.stringify(this.state.answers))  
+        this.socket.emit('answer',{index : e.target.id,value : e.target.value} )
     }
 
     onSubmit(e){
@@ -149,6 +151,20 @@ class StudentExamPage extends Component {
             console.log(msg)
             alert("New announcement :" + msg)
           })
+          this.socket.on('answer', (answer) =>{
+            this.setState(state => {
+                const answers = state.answers.map((item, j) => {
+                  if (j == answer.index) {
+                    return answer.value;
+                  } else {
+                    return item;
+                  }
+                });
+                return {
+                  answers,
+                };
+              })
+        })
     }
 
     onClose(){
@@ -247,4 +263,7 @@ class StudentExamPage extends Component {
     }
 }
 
-export default StudentExamPage
+export default GroupExamPage
+
+
+

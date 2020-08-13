@@ -53,7 +53,12 @@ class ClassPage extends Component {
   }
 
   onCreateExam(){
-    const examURL = '/class/'+this.state.class_id + '/create_exam'
+    const examURL = '/class/'+this.state.class_id + '/create_exam/0'
+    this.props.history.push(examURL)
+  }
+
+  onCreateGroupExam(){
+    const examURL = '/class/'+this.state.class_id + '/create_exam/1'
     this.props.history.push(examURL)
   }
 
@@ -102,6 +107,9 @@ class ClassPage extends Component {
               <Button variant="light" className="main-btn mx-3 px-3" onClick={()=>this.onCreateExam()}>
                 Create exam +
               </Button>
+              <Button variant="light" className="main-btn mx-3 px-3" onClick={()=>this.onCreateGroupExam()}>
+                Create group assignment +
+              </Button>
             </div>
           ):''}
               {this.state.contents ? (
@@ -113,6 +121,10 @@ class ClassPage extends Component {
                       {data.exam_link ? (<div>
                         <b>Test link : </b>
                         <Link to = {{ pathname : '/class/' + this.state.class_id + '/' +this.state.user+ '/'+ data.exam_link._id}}>{data.exam_link.title}/{data.exam_link._id}</Link>
+                      </div>):''}
+                      {data.group_exam ? (<div>
+                        <b>Group test link : </b>
+                        <Link to = {{ pathname : '/class/' + this.state.class_id + '/group/' +this.state.user+ '/'+ data.group_exam}}>{data.group_exam}</Link>
                       </div>):''}
                     </Card.Text>
                   </Card.Body>

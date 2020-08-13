@@ -13,6 +13,8 @@ class TeacherExamPage extends Component {
             questions : [],
             submissions : [],
             show : false,
+            show_doubt : false,
+            doubts : [],
             announcement : '',
             errors: {}
         }
@@ -29,6 +31,12 @@ class TeacherExamPage extends Component {
         fetch_submissions({exam_id : this.state.exam_id}).then(res=>{
             this.setState({submissions : res})
         })
+        this.socket.on('doubt',(doubt)=>{
+            console.log(doubt)
+            this.setState((state) => ({
+                doubts: [...state.doubts, doubt]
+            }))
+        })
     }
 
     onChange(e) {
@@ -39,13 +47,19 @@ class TeacherExamPage extends Component {
         this.setState({show : true})
     }
 
+    onOpenDoubtModal(){
+        this.setState({show_doubt : true})
+    }
+
     onClose(){
         this.setState({show : false})
+        this.setState({show_doubt : false})
     }
 
     onSend(){
         console.log(this.state.announcement)
-        this.socket.emit('message',this.state.announcement)
+        this.socket.emit('announcement',this.state.announcement)
+        this.setState({show : false})
     }
     render(){
        const modal = (
@@ -72,6 +86,25 @@ class TeacherExamPage extends Component {
             </Modal.Footer>
         </Modal> 
        )
+       const modal2 = (
+        <Modal centered show = {this.state.show_doubt}  animation={false}>
+            <Modal.Header closeButton onClick = {()=>this.onClose()}>
+            <Modal.Title>Doubts</Modal.Title>
+            </Modal.Header>
+                <Modal.Body style = {{minHeight : "200px"}}>
+                    <div style = {{fontWeight : "600", fontSize : "19px", color : "grey"}}>
+                        {this.state.doubts?
+                        (
+                            this.state.doubts.map(data=>(
+                                <div>
+                                    {data}
+                                </div>
+                            ))
+                        ):''}
+                    </div>
+                </Modal.Body>
+        </Modal> 
+       )
         return (
             <div className = "container">
                 <div className = "row my-3 mx-3">
@@ -81,7 +114,7 @@ class TeacherExamPage extends Component {
                     <div id = "scroll" style = {{overflowY: 'scroll',height : "600px",border : "1px solid grey", padding : "10px"}}>
                         <div><button className = "btn btn-light " style = {{width : "100%"}} onClick = {()=>this.onOpenModal()}>Announcement live</button><hr/></div>
                         <div><button className = "btn btn-light " style = {{width : "100%"}}>Update questions</button><hr/></div>
-                        <div><button className = "btn btn-light " style = {{width : "100%"}}>Students doubts</button><hr/></div>
+                        <div><button className = "btn btn-light " style = {{width : "100%"}} onClick = {()=>this.onOpenDoubtModal()}>Students doubts</button><hr/></div>
                     </div>
                   </div>
                   <div className=" col">
@@ -112,6 +145,7 @@ class TeacherExamPage extends Component {
                   </div>
                 </div>
                 {modal}
+                {modal2}
             </div>
         )
     }

@@ -11,6 +11,7 @@ class CreateQuestion extends Component {
           title: this.props.location.state.params.title,
           start_time: this.props.location.state.params.start_time,
           end_time : this.props.location.state.params.end_time,
+          exam_type : this.props.location.state.params.exam_type,
           new_question : '',
           questions : [],
           show : false,
@@ -52,7 +53,8 @@ class CreateQuestion extends Component {
             start_time : this.state.start_time,
             end_time : this.state.end_time,
             total_questions : this.state.questions.length,
-            questions : this.state.questions
+            questions : this.state.questions,
+            group : this.state.exam_type
         }
         create_exam(newExam).then(res=>{
           console.log(res)

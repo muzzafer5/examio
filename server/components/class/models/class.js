@@ -35,6 +35,10 @@ const ClassSchema = new Schema({
                 type : ObjectId,
                 ref : "exams"
             },
+            group_exam :{
+                type : ObjectId,
+                ref : "exams"
+            },
             created_at : {
                 type : Date,
                 default : Date.now

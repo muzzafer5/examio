@@ -30,10 +30,22 @@ io.on('connection', socket  =>{
     });
   
     // Listen for chatMessage
-    socket.on('message', msg => {
+    socket.on('announcement', msg => {
       room = map.get(socket.id)
       console.log(msg)
-      socket.broadcast.to(room).emit('message', msg);
+      socket.broadcast.to(room).emit('announcement', msg);
+    });
+
+    socket.on('answer', ans => {
+      room = map.get(socket.id)
+      console.log(ans)
+      socket.broadcast.to(room).emit('answer', ans);
+    });
+    
+    socket.on('doubt', doubt => {
+      room = map.get(socket.id)
+      console.log(doubt)
+      socket.broadcast.to(room).emit('doubt', doubt);
     });
     
     // Runs when client disconnects

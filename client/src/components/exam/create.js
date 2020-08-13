@@ -6,6 +6,7 @@ class CreateExam extends Component {
         super(props)
         this.state = {
           class_id : this.props.match.params.classId,
+          exam_type : this.props.match.params.Id,
           title: '',
           start_time: '',
           end_time : '',
@@ -22,7 +23,7 @@ class CreateExam extends Component {
         return (
           <div className="createExam " style = {{border : "2px solid grey",position:"absolute", top : "20%", width: "70%", left : "15%"}}>
                 <form validate="true">
-                  <h1 className="h2 text-center py-2" style = {{borderBottom : "1px solid grey"}}>Create exam</h1>
+        <h1 className="h2 text-center py-2" style = {{borderBottom : "1px solid grey"}}>Create {this.state.exam_type == "1"? (<span>group </span>): ''}exam</h1>
                   <div className="form-group my-3 mx-3">
                     <label htmlFor="title">Exam title</label>
                     <input
@@ -59,8 +60,8 @@ class CreateExam extends Component {
                   </div>
                   <div className = "my-3">
                   <Link to={{
-                            pathname: '/class/'+this.state.class_id + '/create_exam/question',
-                            state: { params: {start_time : this.state.start_time,end_time : this.state.end_time,title : this.state.title} }
+                            pathname: '/class/'+this.state.class_id + '/create_exam/add/question',
+                            state: { params: {start_time : this.state.start_time,end_time : this.state.end_time,title : this.state.title,exam_type : this.state.exam_type} }
                             }}
                             type="submit"
                             className="btn btn-primary mx-3 px-5"
